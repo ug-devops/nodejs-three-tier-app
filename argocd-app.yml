@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: three-tier-app         # Name of your application
+  namespace: argocd            # ArgoCD namespace
+spec:
+  destination:
+    namespace: default         # The Kubernetes namespace to deploy into (usually 'default')
+    server: https://kubernetes.default.svc  # ArgoCD automatically connects to this server
+  source:
+    repoURL: 'https://github.com/ug-devops/nodejs-three-tier-app'  # Your GitHub repository URL
+    path: manifests                    # Path to your Kubernetes manifests (root directory in this case)
+  project: default              # Project in ArgoCD (default is fine for now)
+  syncPolicy:
+    automated:
+      prune: true               # Automatically remove old resources not in Git anymore
+      selfHeal: true            # Automatically fix any out-of-sync resources
+
